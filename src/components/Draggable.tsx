@@ -1,11 +1,11 @@
-import React from "react";
-import { useDraggable } from "@dnd-kit/core";
+import React, { CSSProperties } from 'react';
+import { useDraggable } from '@dnd-kit/core';
 
 type Props = React.PropsWithChildren;
 
 function Draggable(props: Props) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: "draggable",
+    id: 'draggable',
   });
   const style = transform
     ? {

@@ -1,17 +1,20 @@
-import { useState } from "react";
+import styles from './App.css';
+import { useState } from 'react';
 import {
   RecoilRoot,
   atom,
   selector,
   useRecoilState,
   useRecoilValue,
-} from "recoil";
+} from 'recoil';
 
-import { counterState } from "./recoil/atoms/count";
+import { counterState } from './recoil/atoms/count';
 
-import Droppable from "./components/Droppable";
-import Draggable from "./components/Draggable";
-import { DndContext } from "@dnd-kit/core";
+import Droppable from './components/Droppable';
+import Draggable from './components/Draggable';
+import { DndContext } from '@dnd-kit/core';
+import { createSnapModifier } from '@dnd-kit/modifiers';
+import Board from './components/Board';
 
 function App() {
   const [counter, setCounter] = useRecoilState(counterState);
@@ -22,19 +25,23 @@ function App() {
   };
 
   const handleDragEnd = (event: any) => {
-    if (event.over && event.over.id === "droppable") {
+    console.log(event);
+    if (event.over && event.over.id === 'board') {
       setIsDropped(true);
     }
   };
 
+  const gridSize = 20; // pixels
+  const snapToGridModifier = createSnapModifier(gridSize);
+
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <div className="App">
-        <h1>Vite + React + Recoil</h1>
-        {!isDropped && <DragMarkup />}
-        <Droppable>{isDropped ? <DragMarkup /> : "Drop here"}</Droppable>
-      </div>
-    </DndContext>
+    <div className="App">
+      <DndContext onDragEnd={handleDragEnd} modifiers={[snapToGridModifier]}>
+        <Board>
+          <DragMarkup />
+        </Board>
+      </DndContext>
+    </div>
   );
 }
 
