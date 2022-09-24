@@ -1,3 +1,4 @@
+import styles from './App.css';
 import { useState } from 'react';
 import {
   RecoilRoot,
@@ -12,6 +13,8 @@ import { counterState } from './recoil/atoms/count';
 
 import Droppable from './components/Droppable';
 import Draggable from './components/Draggable';
+import { createSnapModifier } from '@dnd-kit/modifiers';
+import Board from './components/Board';
 
 function App() {
   const [counter, setCounter] = useRecoilState(counterState);
@@ -22,21 +25,22 @@ function App() {
   };
 
   const handleDragEnd = (event: any) => {
-    if (event.over && event.over.id === 'droppable') {
+    if (event.over && event.over.id === 'board') {
       setIsDropped(true);
     }
   };
 
+  const gridSize = 20; // pixels
+  const snapToGridModifier = createSnapModifier(gridSize);
+
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <div className="App">
-        <h1>Vite + React + Recoil</h1>
-        {!isDropped && <DragMarkup />}
-        <Droppable id="droppable">
-          {isDropped ? <DragMarkup /> : 'Drop here'}
-        </Droppable>
-      </div>
-    </DndContext>
+    <div className="App">
+      <DndContext onDragEnd={handleDragEnd} modifiers={[snapToGridModifier]}>
+        <Board>
+          <DragMarkup />
+        </Board>
+      </DndContext>
+    </div>
   );
 }
 
