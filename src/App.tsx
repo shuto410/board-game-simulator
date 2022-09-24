@@ -7,12 +7,12 @@ import {
   useRecoilState,
   useRecoilValue,
 } from 'recoil';
-import { DndContext } from '@dnd-kit/core';
 
 import { counterState } from './recoil/atoms/count';
 
 import Droppable from './components/Droppable';
 import Draggable from './components/Draggable';
+import { DndContext } from '@dnd-kit/core';
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import Board from './components/Board';
 
