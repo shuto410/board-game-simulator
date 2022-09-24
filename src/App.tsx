@@ -1,28 +1,28 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   RecoilRoot,
   atom,
   selector,
   useRecoilState,
   useRecoilValue,
-} from "recoil";
+} from 'recoil';
+import { DndContext } from '@dnd-kit/core';
 
-import { counterState } from "./recoil/atoms/count";
+import { counterState } from './recoil/atoms/count';
 
-import Droppable from "./components/Droppable";
-import Draggable from "./components/Draggable";
-import { DndContext } from "@dnd-kit/core";
+import Droppable from './components/Droppable';
+import Draggable from './components/Draggable';
 
 function App() {
   const [counter, setCounter] = useRecoilState(counterState);
   const [isDropped, setIsDropped] = useState(false);
 
   const DragMarkup = () => {
-    return <Draggable>Drag me</Draggable>;
+    return <Draggable id="draggable">Drag me</Draggable>;
   };
 
   const handleDragEnd = (event: any) => {
-    if (event.over && event.over.id === "droppable") {
+    if (event.over && event.over.id === 'droppable') {
       setIsDropped(true);
     }
   };
@@ -32,7 +32,9 @@ function App() {
       <div className="App">
         <h1>Vite + React + Recoil</h1>
         {!isDropped && <DragMarkup />}
-        <Droppable>{isDropped ? <DragMarkup /> : "Drop here"}</Droppable>
+        <Droppable id="droppable">
+          {isDropped ? <DragMarkup /> : 'Drop here'}
+        </Droppable>
       </div>
     </DndContext>
   );
