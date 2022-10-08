@@ -1,4 +1,5 @@
-type Elements = {
+type BaseProperties = {
+  id: string;
   isDroppable: boolean;
   isDraggable: boolean;
   coordinates: {
@@ -9,15 +10,15 @@ type Elements = {
     width: number;
     height: number;
   };
-  parent?: GameElements;
-  children?: GameElements[];
+  parent?: GameElement;
+  children?: GameElement[];
 };
 
-type GameElements = Card | DummyCard | Deck | Place | Board;
+type GameElement = Card | DummyCard | Deck | Place | Board;
 
 type CardState = 'head' | 'tail' | 'sideHead' | 'sideTail';
 
-type Card = Elements & {
+type Card = BaseProperties & {
   title: string;
   image?: string;
   description?: string;
@@ -26,14 +27,14 @@ type Card = Elements & {
 
 type DummyCard = Omit<Card, 'description'>;
 
-type Deck = Elements & {
+type Deck = BaseProperties & {
   image?: string;
 };
 
-type Place = Elements & {
+type Place = BaseProperties & {
   color?: string;
 };
 
-type Board = Elements & {};
+type Board = BaseProperties & {};
 
 export type { Card, Deck, DummyCard, Place, Board };
