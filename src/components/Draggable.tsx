@@ -1,7 +1,5 @@
 import React, { CSSProperties } from 'react';
 import { useDraggable } from '@dnd-kit/core';
-import { useRecoilState } from 'recoil';
-import { drawerVisibilityState } from '../recoil/atoms/ui';
 
 type Props = React.PropsWithChildren & {
   id: string;
@@ -17,9 +15,6 @@ const resetButtonStyles: CSSProperties = {
 };
 
 function Draggable(props: Props) {
-  const [isDrawerVisible, setIsDrawerVisible] = useRecoilState(
-    drawerVisibilityState
-  );
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: props.id,
   });
@@ -31,19 +26,8 @@ function Draggable(props: Props) {
       : undefined,
   };
 
-  const handleOnClick = () => {
-    setIsDrawerVisible(!isDrawerVisible);
-    console.log('handleOnClick');
-  };
-
   return (
-    <button
-      ref={setNodeRef}
-      style={style}
-      {...listeners}
-      {...attributes}
-      onClick={handleOnClick}
-    >
+    <button ref={setNodeRef} style={style} {...listeners} {...attributes}>
       {props.children}
     </button>
   );
