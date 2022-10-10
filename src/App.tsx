@@ -17,7 +17,7 @@ import { createSnapModifier } from '@dnd-kit/modifiers';
 import Board from './components/Board';
 import Card from './components/Card';
 import Place from './components/Place';
-import EditDrawer from './components/EditDrawer';
+import Drawer from './components/Drawer';
 import { drawerVisibilityState } from './recoil/atoms/ui';
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
 
   return (
     <div className="App">
-      <EditDrawer />
+      <Drawer />
       <DndContext onDragEnd={handleDragEnd} modifiers={[snapToGridModifier]}>
         <Board>
           <Card
