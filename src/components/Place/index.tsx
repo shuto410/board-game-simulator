@@ -5,19 +5,22 @@ import PlaceVisual from './PlaceVisual';
 
 type Props = React.PropsWithChildren & {
   id: string;
+  title?: string;
   attachedCards?: React.ReactNode;
 };
 
 function Place(props: Props) {
+  const { id, ...rest } = props;
+
   const handleDragEnd = (event: any) => {
     // TODO: impl
   };
 
   return (
-    <Draggable id={props.id}>
+    <Draggable id={id}>
       <DndContext onDragEnd={handleDragEnd}>
-        <PlaceVisual>
-          <Droppable id={`place${props.id}`}>{props.attachedCards}</Droppable>
+        <PlaceVisual {...rest}>
+          <Droppable id={`place${id}`} />
         </PlaceVisual>
       </DndContext>
     </Draggable>

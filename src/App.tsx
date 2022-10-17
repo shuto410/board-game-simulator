@@ -15,14 +15,12 @@ import Draggable from './components/Draggable';
 import { DndContext } from '@dnd-kit/core';
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import Board from './components/Board';
+import Card from './components/Card';
+import Place from './components/Place';
 
 function App() {
   const [counter, setCounter] = useRecoilState(counterState);
   const [isDropped, setIsDropped] = useState(false);
-
-  const DragMarkup = () => {
-    return <Draggable id="draggable">Drag me</Draggable>;
-  };
 
   const handleDragEnd = (event: any) => {
     if (event.over && event.over.id === 'board') {
@@ -37,7 +35,13 @@ function App() {
     <div className="App">
       <DndContext onDragEnd={handleDragEnd} modifiers={[snapToGridModifier]}>
         <Board>
-          <DragMarkup />
+          <Card
+            id="draggable"
+            url="https://picsum.photos/50/40"
+            title={'test card'}
+            description={'this is description of description'}
+          />
+          <Place id={'place'} title={'test place'} />
         </Board>
       </DndContext>
     </div>
