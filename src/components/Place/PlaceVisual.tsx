@@ -1,31 +1,33 @@
 import React, { CSSProperties } from 'react';
+import { PlaceProperties } from '../../type';
+import RenderGameElement from '../../helper';
 
 const CARD_WIDTH = 59;
 const CARD_HEIGHT = 91;
 const RATIO = 1.5;
 const PADDING = 10;
 
-type Props = React.PropsWithChildren & {
-  title?: string;
-  attachedCards?: React.ReactNode;
-};
+function PlaceVisual(props: PlaceProperties & React.PropsWithChildren) {
+  const {
+    title,
+    coordinates: { x, y },
+  } = props;
+  const topChildren = props.childElements?.[0];
 
-function PlaceVisual(props: Props) {
-  const { title, attachedCards } = props;
+  const style: CSSProperties = {
+    width: `${CARD_WIDTH * RATIO + 2 * PADDING}px`,
+    height: `${CARD_HEIGHT * RATIO + 2 * PADDING}px`,
+    border: '1px solid',
+    borderRadius: '10px',
+    transform: `translate3d(${x}px, ${y}px, 0)`,
+  };
 
   return (
     <div style={style}>
       <div>{title}</div>
-      <div>{props.children}</div>
+      {topChildren && <RenderGameElement gameElement={topChildren} />}
     </div>
   );
 }
-
-const style: CSSProperties = {
-  width: `${CARD_WIDTH * RATIO + 2 * PADDING}px`,
-  height: `${CARD_HEIGHT * RATIO + 2 * PADDING}px`,
-  border: '1px solid',
-  borderRadius: '10px',
-};
 
 export default PlaceVisual;
