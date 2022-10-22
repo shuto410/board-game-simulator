@@ -17,10 +17,15 @@ import { createSnapModifier } from '@dnd-kit/modifiers';
 import Board from './components/Board';
 import Card from './components/Card';
 import Place from './components/Place';
+import Drawer from './components/Drawer';
+import { drawerVisibilityState } from './recoil/atoms/ui';
 
 function App() {
   const [counter, setCounter] = useRecoilState(counterState);
   const [isDropped, setIsDropped] = useState(false);
+  const [isDrawerVisible, setIsDrawerVisible] = useRecoilState(
+    drawerVisibilityState
+  );
 
   const handleDragEnd = (event: any) => {
     if (event.over && event.over.id === 'board') {
@@ -31,8 +36,13 @@ function App() {
   const gridSize = 20; // pixels
   const snapToGridModifier = createSnapModifier(gridSize);
 
+  const handleOnClick = () => {
+    setIsDrawerVisible(!isDrawerVisible);
+  };
+
   return (
     <div className="App">
+      <Drawer />
       <DndContext onDragEnd={handleDragEnd} modifiers={[snapToGridModifier]}>
         <Board>
           <Card
@@ -44,6 +54,9 @@ function App() {
           <Place id={'place'} title={'test place'} />
         </Board>
       </DndContext>
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <button onClick={handleOnClick}>+</button>
+      </div>
     </div>
   );
 }
