@@ -1,7 +1,9 @@
+import { ReactNode } from 'react';
+
 type BaseProperties = {
   id: string;
-  isDroppable: boolean;
-  isDraggable: boolean;
+  isDroppable?: boolean;
+  isDraggable?: boolean;
   coordinates: {
     x: number;
     y: number;
@@ -11,30 +13,46 @@ type BaseProperties = {
     height: number;
   };
   parent?: GameElement;
-  children?: GameElement[];
+  childElements?: GameElement[];
+  Component: React.FC<Omit<BaseProperties, 'Component'>>;
 };
 
-type GameElement = Card | DummyCard | Deck | Place | Board;
+type GameElement =
+  | CardProperties
+  | DummyCardProperties
+  | DeckProperties
+  | PlaceProperties
+  | BoardProperties;
 
 type CardState = 'head' | 'tail' | 'sideHead' | 'sideTail';
 
-type Card = BaseProperties & {
+// TODO: sync the types below with the props of each component
+
+type CardProperties = BaseProperties & {
   title: string;
   image?: string;
   description?: string;
   state: CardState;
 };
 
-type DummyCard = Omit<Card, 'description'>;
+type DummyCardProperties = Omit<CardProperties, 'description'>;
 
-type Deck = BaseProperties & {
+type DeckProperties = BaseProperties & {
   image?: string;
 };
 
-type Place = BaseProperties & {
+type PlaceProperties = BaseProperties & {
+  title?: string;
   color?: string;
 };
 
-type Board = BaseProperties & {};
+type BoardProperties = BaseProperties & {};
 
-export type { Card, Deck, DummyCard, Place, Board };
+export type {
+  CardProperties,
+  DeckProperties,
+  DummyCardProperties,
+  PlaceProperties,
+  BoardProperties,
+  GameElement,
+};

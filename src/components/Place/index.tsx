@@ -3,24 +3,18 @@ import Draggable from '../Draggable';
 import Droppable from '../Droppable';
 import PlaceVisual from './PlaceVisual';
 
-type Props = React.PropsWithChildren & {
-  id: string;
-  title?: string;
-  attachedCards?: React.ReactNode;
-};
+import { PlaceProperties } from '../../type';
 
-function Place(props: Props) {
-  const { id, ...rest } = props;
-
+function Place(props: PlaceProperties) {
   const handleDragEnd = (event: any) => {
     // TODO: impl
   };
 
   return (
-    <Draggable id={id}>
+    <Draggable id={props.id}>
       <DndContext onDragEnd={handleDragEnd}>
-        <PlaceVisual {...rest}>
-          <Droppable id={`place${id}`} />
+        <PlaceVisual {...props}>
+          <Droppable id={`place${props.id}`} />
         </PlaceVisual>
       </DndContext>
     </Draggable>
