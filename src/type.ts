@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 type BaseProperties = {
   id: string;
   isDroppable?: boolean;
@@ -12,7 +10,7 @@ type BaseProperties = {
     width: number;
     height: number;
   };
-  parent?: GameElement;
+  parent: string;
   childElements?: GameElement[];
   Component: React.FC<Omit<BaseProperties, 'Component'>>;
 };
@@ -46,7 +44,7 @@ type PlaceProperties = BaseProperties & {
   color?: string;
 };
 
-type BoardProperties = BaseProperties & {};
+type BoardProperties = BaseProperties;
 
 export type {
   CardProperties,

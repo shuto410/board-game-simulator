@@ -1,11 +1,12 @@
 import React, { CSSProperties } from 'react';
 import { useDroppable } from '@dnd-kit/core';
+import { BOARD_ID } from '../constants';
 
 type Props = React.PropsWithChildren;
 
 function Board(props: Props) {
-  const { isOver, setNodeRef } = useDroppable({
-    id: 'board',
+  const { setNodeRef } = useDroppable({
+    id: BOARD_ID,
     data: {
       type: 'board',
     },
