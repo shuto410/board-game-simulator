@@ -124,5 +124,5 @@ export const isReplaceNecessary = (
   parentId: string
 ) => {
   const gameElement = findGameElementById(board, id);
-  return gameElement.parent === parentId;
+  return gameElement.parent !== parentId;
 };
