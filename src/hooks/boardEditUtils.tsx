@@ -1,21 +1,5 @@
 import { GameElement } from '../type';
 
-// helper to make findGameElementById return GameElement and not undefined
-const findGameElementChildById = (
-  board: GameElement | undefined,
-  id: string
-): GameElement | undefined => {
-  if (!board) return;
-  if (board.id === id) return board;
-  return board.childElements
-    ?.map((gameElement: GameElement) => {
-      return gameElement.id === id
-        ? gameElement
-        : findGameElementChildById(gameElement, id);
-    })
-    .filter((ge) => ge)?.[0];
-};
-
 export const findGameElementById = (
   board: GameElement,
   id: string
@@ -23,7 +7,7 @@ export const findGameElementById = (
   if (board.id === id) return board;
 
   const foundElements = board.childElements
-    ?.map((gameElement: GameElement) => {
+    ?.map((gameElement) => {
       return findGameElementChildById(gameElement, id);
     })
     .filter((ge): ge is GameElement => ge !== undefined);
@@ -46,9 +30,7 @@ export const attachToGameElementById = (
   const updatedParentGameElement = {
     ...parentGameElement,
     childElements: [
-      ...(parentGameElement?.childElements?.length
-        ? parentGameElement.childElements
-        : []),
+      ...(parentGameElement.childElements ?? []),
       {
         ...gameElement,
         parent: parentId,
@@ -69,7 +51,7 @@ export const removeGameElementById = (
   const targetGameElement = findGameElementById(board, id);
   const parentGameElement = findGameElementById(
     board,
-    targetGameElement.parent as string
+    targetGameElement.parentId as string
   );
   const updatedParentGameElement = {
     ...parentGameElement,
@@ -124,5 +106,21 @@ export const isReplaceNecessary = (
   parentId: string
 ) => {
   const gameElement = findGameElementById(board, id);
-  return gameElement.parent !== parentId;
+  return gameElement.parentId !== parentId;
+};
+
+// helper to make findGameElementById return GameElement and not undefined
+const findGameElementChildById = (
+  board: GameElement | undefined,
+  id: string
+): GameElement | undefined => {
+  if (!board) return;
+  if (board.id === id) return board;
+  return board.childElements
+    ?.map((gameElement) => {
+      return gameElement.id === id
+        ? gameElement
+        : findGameElementChildById(gameElement, id);
+    })
+    .filter((ge) => ge)?.[0];
 };

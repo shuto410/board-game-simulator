@@ -10,7 +10,7 @@ type BaseProperties = {
     width: number;
     height: number;
   };
-  parent?: string;
+  parentId?: string;
   childElements?: GameElement[];
   Component: React.FC<Omit<BaseProperties, 'Component'>>;
 };

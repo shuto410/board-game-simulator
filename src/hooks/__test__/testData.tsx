@@ -13,7 +13,7 @@ export const boardTestData: BoardProperties = {
       id: 'place',
       coordinates: testCoordinate,
       size: testSize,
-      parent: 'board',
+      parentId: 'board',
     } as PlaceProperties,
   ],
 };

@@ -17,6 +17,6 @@ export const boardState = atom<GameElement>({
       height: 0,
     },
     Component: Board,
-    parent: 'null',
+    parentId: 'null',
   } as BoardProperties,
 });

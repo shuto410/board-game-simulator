@@ -101,7 +101,7 @@ describe('Test boardEditUtil functions', () => {
       const result = isReplaceNecessary(
         boardTestData,
         boardTestData.childElements![0].id,
-        boardTestData.childElements![0].parent as string
+        boardTestData.childElements![0].parentId as string
       );
       expect(result).toBe(false);
     });

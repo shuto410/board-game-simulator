@@ -28,13 +28,13 @@ function App() {
   const setNewItem = () => {
     const newBoard = { ...board };
     newBoard.childElements = [
-      ...(board?.childElements ? board.childElements : []),
+      ...(board?.childElements ?? []),
       {
         id: `testPlace${counter}`,
         coordinates: { x: counter * 100, y: counter * 100 },
         size: { width: 100, height: 100 },
         title: `test place ${counter}`,
-        parent: BOARD_ID,
+        parentId: BOARD_ID,
         // and children cards
         childElements: [
           {
@@ -43,7 +43,7 @@ function App() {
             size: { width: 100, height: 100 },
             title: `test card ${counter}`,
             state: 'head',
-            parent: `testPlace${counter}`,
+            parentId: `testPlace${counter}`,
             Component: Card,
           } as CardProperties,
         ],
