@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react';
 import { PlaceProperties } from '../../type';
-import RenderGameElement from '../../helper';
+import RenderGameElement from '../RenderGameElement';
 
 const CARD_WIDTH = 59;
 const CARD_HEIGHT = 91;
