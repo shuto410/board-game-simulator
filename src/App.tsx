@@ -15,6 +15,7 @@ import { PlaceProperties, CardProperties } from './type';
 import RenderGameElement from './components/RenderGameElement';
 import { BOARD_ID } from './constants';
 import useHandleDradEnd from './hooks/useHandleDradEnd';
+import { PropertyEditor } from './components/PropertyEditor';
 
 function App() {
   const [counter, setCounter] = useRecoilState(counterState);
@@ -66,6 +67,7 @@ function App() {
   return (
     <div className="App">
       <Drawer>
+        <PropertyEditor />
         <button onClick={setNewItem}>add new item</button>
       </Drawer>
       <DndContext onDragEnd={handleDragEnd} modifiers={[snapToGridModifier]}>
