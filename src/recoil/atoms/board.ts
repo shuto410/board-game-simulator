@@ -13,8 +13,8 @@ export const boardState = atom<GameElement>({
       y: 0,
     },
     size: {
-      width: 0,
-      height: 0,
+      width: 800,
+      height: 500,
     },
     Component: Board,
     parentId: 'null',
