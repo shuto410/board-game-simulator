@@ -14,7 +14,7 @@ import { drawerVisibilityState } from './recoil/atoms/ui';
 import { PlaceProperties, CardProperties } from './type';
 import RenderGameElement from './components/RenderGameElement';
 import { BOARD_ID } from './constants';
-import useHandleDradEnd from './hooks/useHandleDradEnd';
+import useHandleDragEnd from './hooks/useHandleDragEnd';
 
 function App() {
   const [counter, setCounter] = useRecoilState(counterState);
@@ -22,7 +22,7 @@ function App() {
   const [isDrawerVisible, setIsDrawerVisible] = useRecoilState(
     drawerVisibilityState
   );
-  const { handleDragEnd } = useHandleDradEnd();
+  const { handleDragEnd } = useHandleDragEnd();
 
   // test function for adding items to state and displaying
   const setNewItem = () => {
@@ -69,7 +69,7 @@ function App() {
         <button onClick={setNewItem}>add new item</button>
       </Drawer>
       <DndContext onDragEnd={handleDragEnd} modifiers={[snapToGridModifier]}>
-        <Board>
+        <Board size={board.size}>
           {board?.childElements?.map((gameElement) => {
             return <RenderGameElement gameElement={gameElement} />;
           })}
