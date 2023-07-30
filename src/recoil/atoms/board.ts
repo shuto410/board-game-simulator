@@ -1,11 +1,11 @@
 import { atom } from 'recoil';
-import Board from '../../components/Board';
 import { BOARD_ID } from '../../constants';
 import { BoardProperties, GameElement } from '../../type';
 
 export const boardState = atom<GameElement>({
   key: 'boardState',
   default: {
+    type: 'BOARD',
     id: BOARD_ID,
     childElements: [],
     coordinates: {
@@ -16,7 +16,6 @@ export const boardState = atom<GameElement>({
       width: 800,
       height: 500,
     },
-    Component: Board,
     parentId: 'null',
   } as BoardProperties,
 });

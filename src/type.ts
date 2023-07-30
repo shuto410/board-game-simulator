@@ -12,7 +12,6 @@ type BaseProperties = {
   };
   parentId?: string;
   childElements?: GameElement[];
-  Component: React.FC<Omit<BaseProperties, 'Component'>>;
 };
 
 type GameElement =
@@ -27,24 +26,34 @@ type CardState = 'head' | 'tail' | 'sideHead' | 'sideTail';
 // TODO: sync the types below with the props of each component
 
 type CardProperties = BaseProperties & {
+  type: 'CARD';
   title: string;
-  image?: string;
-  description?: string;
   state: CardState;
+  imageUrl?: string;
+  description?: string;
 };
 
-type DummyCardProperties = Omit<CardProperties, 'description'>;
+type DummyCardProperties = BaseProperties & {
+  type: 'DUMMY_CARD'
+  title: string;
+  state: CardState;
+  imageUrl?: string;
+};
 
 type DeckProperties = BaseProperties & {
+  type: 'DECK'
   image?: string;
 };
 
 type PlaceProperties = BaseProperties & {
+  type: 'PLACE'
   title?: string;
   color?: string;
 };
 
-type BoardProperties = BaseProperties;
+type BoardProperties = BaseProperties & {
+  type: 'BOARD'
+};
 
 export type {
   CardProperties,

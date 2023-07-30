@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import { CSSProperties } from 'react';
 import { PlaceProperties } from '../../type';
 import RenderGameElement from '../RenderGameElement';
 
@@ -7,7 +7,9 @@ const CARD_HEIGHT = 91;
 const RATIO = 1.5;
 const PADDING = 10;
 
-function PlaceVisual(props: PlaceProperties & React.PropsWithChildren) {
+export type Props = Omit<PlaceProperties, 'type'>;
+
+function PlaceVisual(props: Props) {
   const {
     title,
     coordinates: { x, y },

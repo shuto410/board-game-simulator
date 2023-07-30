@@ -6,12 +6,9 @@ import { boardState } from './recoil/atoms/board';
 import { DndContext } from '@dnd-kit/core';
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import Board from './components/Board';
-import Card from './components/Card';
-import Place from './components/Place';
 import Drawer from './components/Drawer';
 import { drawerVisibilityState } from './recoil/atoms/ui';
 
-import { PlaceProperties, CardProperties } from './type';
 import RenderGameElement from './components/RenderGameElement';
 import { BOARD_ID } from './constants';
 import useHandleDragEnd from './hooks/useHandleDragEnd';
@@ -30,6 +27,7 @@ function App() {
     newBoard.childElements = [
       ...(board?.childElements ?? []),
       {
+        type: 'PLACE',
         id: `testPlace${counter}`,
         coordinates: { x: counter * 100, y: counter * 100 },
         size: { width: 100, height: 100 },
@@ -38,17 +36,17 @@ function App() {
         // and children cards
         childElements: [
           {
+            type: 'CARD',
             id: `testCard${counter}`,
             coordinates: { x: counter * 100, y: counter * 100 },
             size: { width: 100, height: 100 },
             title: `test card ${counter}`,
+            imageUrl: 'https://picsum.photos/60/90',
             state: 'head',
             parentId: `testPlace${counter}`,
-            Component: Card,
-          } as CardProperties,
+          },
         ],
-        Component: Place,
-      } as PlaceProperties,
+      },
     ];
 
     setBoard(newBoard);

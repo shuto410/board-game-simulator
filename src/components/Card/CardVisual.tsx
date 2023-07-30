@@ -1,21 +1,18 @@
-import React, { CSSProperties } from 'react';
+import { CSSProperties } from 'react';
+import { CardProperties } from '../../type';
 
 const CARD_WIDTH = 59;
 const CARD_HEIGHT = 91;
 const RATIO = 1.5;
 
-type Props = React.PropsWithChildren & {
-  url?: string;
-  title?: string;
-  description?: string;
-};
+export type Props = Omit<CardProperties, 'type'>;
 
 function CardVisual(props: Props) {
-  const { url, title, description } = props;
+  const { imageUrl, title, description } = props;
   return (
     <div style={style}>
       <div>{title}</div>
-      <img src={url} />
+      <img src={imageUrl} />
       <div>{description}</div>
     </div>
   );
