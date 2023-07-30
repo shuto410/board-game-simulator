@@ -16,6 +16,10 @@ function RenderGameElement(props: { gameElement: GameElement }) {
       return <div>TBD</div>;
     case 'DUMMY_CARD':
       return <div>TBD</div>;
+    default:
+      const { type } = gameElement;
+      const exhaustivenessCheck: never = type;
+      return exhaustivenessCheck;
   }
 }
 export default RenderGameElement;
