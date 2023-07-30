@@ -2,9 +2,11 @@ import Draggable from '../Draggable';
 import Droppable from '../Droppable';
 import PlaceVisual from './PlaceVisual';
 
-import { PlaceProperties } from '../../type';
+import {Props as PlaceVisualProps} from './PlaceVisual';
 
-function Place(props: PlaceProperties) {
+type Props = PlaceVisualProps;
+
+function Place(props: Props) {
   return (
     <Draggable id={props.id}>
       <Droppable id={`place${props.id}`}>
