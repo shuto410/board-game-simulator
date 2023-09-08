@@ -1,14 +1,18 @@
 import { CSSProperties } from 'react';
 import { CardProperties } from '../../type';
 
-const CARD_WIDTH = 59;
-const CARD_HEIGHT = 91;
-const RATIO = 1.5;
-
 export type Props = Omit<CardProperties, 'type'>;
 
 function CardVisual(props: Props) {
-  const { imageUrl, title, description } = props;
+  const { imageUrl, title, description, size } = props;
+
+  const style: CSSProperties = {
+    width: `${size.width}px`,
+    height: `${size.height}px`,
+    border: '1px solid',
+    borderRadius: '10px',
+  };
+
   return (
     <div style={style}>
       <div>{title}</div>
@@ -17,12 +21,5 @@ function CardVisual(props: Props) {
     </div>
   );
 }
-
-const style: CSSProperties = {
-  width: `${CARD_WIDTH * RATIO}px`,
-  height: `${CARD_HEIGHT * RATIO}px`,
-  border: '1px solid',
-  borderRadius: '10px',
-};
 
 export default CardVisual;

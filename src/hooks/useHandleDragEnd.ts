@@ -21,10 +21,9 @@ function useHandleDragEnd() {
       const { x, y } = draggedElement.coordinates;
 
       const newCoordinates = { x: x + dx, y: y + dy };
-      // FIX THIS:
-      // This method doesn't check if the place "rectangle" is within the board bounds
-      // so it could extend beyond the board's borders.
-      if (!isPointWithinBoardBounds(newCoordinates.x, newCoordinates.y)) return;
+      // TODO:
+      // Might want little more validation e.g. screen size
+      if (!isElementWithinBoardBounds(newCoordinates, draggedElement)) return;
 
       // FIX THIS:
       // currently, cannot execute setGameElementProperties & replaceGameElement
@@ -38,10 +37,18 @@ function useHandleDragEnd() {
     [findGameElementById, setGameElementProperties, replaceGameElement]
   );
 
-  const isPointWithinBoardBounds = (x: number, y: number) => {
-    const {width, height} = board.size; 
-    return 0 <= x && x <= width && 0 <= y && y <= height;
-  }
+  const isElementWithinBoardBounds = (
+    coordinates: { x: number; y: number },
+    element: GameElement
+  ) => {
+    const { width, height } = board.size;
+    return (
+      0 <= coordinates.x &&
+      coordinates.x + element.size.width <= width &&
+      0 <= coordinates.y &&
+      coordinates.y + element.size.height <= height
+    );
+  };
 
   return {
     handleDragEnd,
