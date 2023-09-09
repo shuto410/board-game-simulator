@@ -2,28 +2,34 @@ import { useCallback } from 'react';
 import { DragEndEvent } from '@dnd-kit/core';
 import { GameElement } from '../type';
 import useBoardUtils from './useBoardUtils';
+import { boardState } from '../recoil/atoms/board';
+import { useRecoilState } from 'recoil';
 
-function useHandleDradEnd() {
+function useHandleDragEnd() {
+  const [board, setBoard] = useRecoilState(boardState);
+
   const { findGameElementById, setGameElementProperties, replaceGameElement } =
     useBoardUtils();
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       const draggedId = event.active.id as string;
-      const droppedId = event.over?.id as string;
-
-      if (!droppedId) return;
 
       const draggedElement: GameElement = findGameElementById(draggedId);
 
       const { x: dx, y: dy } = event.delta;
       const { x, y } = draggedElement.coordinates;
 
+      const newCoordinates = { x: x + dx, y: y + dy };
+      // TODO:
+      // Might want little more validation e.g. screen size
+      if (!isElementWithinBoardBounds(newCoordinates, draggedElement)) return;
+
       // FIX THIS:
       // currently, cannot execute setGameElementProperties & replaceGameElement
       // at the same time, because both functions have board state changes so the latter one will not work
       setGameElementProperties(draggedId, {
-        coordinates: { x: x + dx, y: y + dy },
+        coordinates: newCoordinates,
       });
 
       // replaceGameElement(draggedId, droppedId);
@@ -31,9 +37,22 @@ function useHandleDradEnd() {
     [findGameElementById, setGameElementProperties, replaceGameElement]
   );
 
+  const isElementWithinBoardBounds = (
+    coordinates: { x: number; y: number },
+    element: GameElement
+  ) => {
+    const { width, height } = board.size;
+    return (
+      0 <= coordinates.x &&
+      coordinates.x + element.size.width <= width &&
+      0 <= coordinates.y &&
+      coordinates.y + element.size.height <= height
+    );
+  };
+
   return {
     handleDragEnd,
   };
 }
 
-export default useHandleDradEnd;
+export default useHandleDragEnd;

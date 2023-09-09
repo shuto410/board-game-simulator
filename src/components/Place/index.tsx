@@ -1,22 +1,17 @@
-import { DndContext } from '@dnd-kit/core';
 import Draggable from '../Draggable';
 import Droppable from '../Droppable';
 import PlaceVisual from './PlaceVisual';
 
-import { PlaceProperties } from '../../type';
+import {Props as PlaceVisualProps} from './PlaceVisual';
 
-function Place(props: PlaceProperties) {
-  const handleDragEnd = (event: any) => {
-    // TODO: impl
-  };
+type Props = PlaceVisualProps;
 
+function Place(props: Props) {
   return (
     <Draggable id={props.id}>
-      <DndContext onDragEnd={handleDragEnd}>
-        <PlaceVisual {...props}>
-          <Droppable id={`place${props.id}`} />
-        </PlaceVisual>
-      </DndContext>
+      <Droppable id={`place${props.id}`}>
+        <PlaceVisual {...props} />
+      </Droppable>
     </Draggable>
   );
 }

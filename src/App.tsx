@@ -6,21 +6,18 @@ import { boardState } from './recoil/atoms/board';
 import { DndContext } from '@dnd-kit/core';
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import Board from './components/Board';
-import Card from './components/Card';
-import Place from './components/Place';
 import {
   drawerVisibilityState,
   selectedElementIdState,
 } from './recoil/atoms/ui';
 
-import { PlaceProperties, CardProperties } from './type';
 import RenderGameElement from './components/RenderGameElement';
 import { BOARD_ID } from './constants';
-import useHandleDradEnd from './hooks/useHandleDradEnd';
 import { PropertyEditor } from './components/PropertyEditor';
 import { Drawer, Menu, Textarea } from 'react-daisyui';
 import { Button } from 'semantic-ui-react';
 import './App.css';
+import useHandleDragEnd from './hooks/useHandleDragEnd';
 
 function App() {
   const [counter, setCounter] = useRecoilState(counterState);
@@ -31,7 +28,7 @@ function App() {
   const [selectedElementId, setSelectedElementId] = useRecoilState(
     selectedElementIdState
   );
-  const { handleDragEnd } = useHandleDradEnd();
+  const { handleDragEnd } = useHandleDragEnd();
 
   // test function for adding items to state and displaying
   const setNewItem = () => {
@@ -40,7 +37,8 @@ function App() {
     newBoard.childElements = [
       ...(board?.childElements ?? []),
       {
-        id,
+        type: 'PLACE',
+        id: `testPlace${counter}`,
         coordinates: { x: counter * 100, y: counter * 100 },
         size: { width: 100, height: 100 },
         title: `test place ${counter}`,
@@ -48,17 +46,18 @@ function App() {
         // and children cards
         childElements: [
           {
-            id: `testCard${counter + 1}`,
+            type: 'CARD',
+            id: `testCard${counter}`,
             coordinates: { x: counter * 100, y: counter * 100 },
             size: { width: 100, height: 100 },
             title: `test card ${counter}`,
-            state: 'head',
-            parentId: id,
-            Component: Card,
-          } as CardProperties,
+            imageUrl: 'https://picsum.photos/60/90',
+            face: 'down',
+            rotation: 'horizontal',
+            parentId: `testPlace${counter}`,
+          },
         ],
-        Component: Place,
-      } as PlaceProperties,
+      },
     ];
 
     setSelectedElementId(id);
@@ -82,7 +81,7 @@ function App() {
         side={<PropertyEditor />}
       >
         <DndContext onDragEnd={handleDragEnd} modifiers={[snapToGridModifier]}>
-          <Board>
+          <Board size={board.size}>
             {board?.childElements?.map((gameElement) => {
               return <RenderGameElement gameElement={gameElement} />;
             })}

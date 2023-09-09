@@ -1,7 +1,25 @@
 import { GameElement } from '../type';
+import Board from './Board';
+import Card from './Card';
+import Place from './Place';
 
 function RenderGameElement(props: { gameElement: GameElement }) {
-  const { Component, ...rest } = props.gameElement;
-  return <Component {...rest} />;
+  const { gameElement } = props;
+  switch (gameElement.type) {
+    case 'BOARD':
+      return <Board {...gameElement} />;
+    case 'PLACE':
+      return <Place {...gameElement} />;
+    case 'CARD':
+      return <Card {...gameElement} />;
+    case 'DECK':
+      return <div>TBD</div>;
+    case 'DUMMY_CARD':
+      return <div>TBD</div>;
+    default:
+      const { type } = gameElement;
+      const exhaustivenessCheck: never = type;
+      return exhaustivenessCheck;
+  }
 }
 export default RenderGameElement;

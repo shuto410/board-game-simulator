@@ -5,7 +5,7 @@ export const drawerVisibilityState = atom({
   default: false,
 });
 
-export const selectedElementIdState = atom<string | undefiened>({
+export const selectedElementIdState = atom<string | undefined>({
   key: 'selectedElementIdState',
-  default: undefined
-})
+  default: undefined,
+});

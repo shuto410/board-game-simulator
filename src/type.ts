@@ -12,7 +12,6 @@ type BaseProperties = {
   };
   parentId?: string;
   childElements?: GameElement[];
-  Component: React.FC<Omit<BaseProperties, "Component">>;
 };
 
 export type GameElement =
@@ -22,35 +21,44 @@ export type GameElement =
   | PlaceProperties
   | BoardProperties;
 
-export type CardFace = "up" | "down";
-export type CardRotation = "vertical" | "horizontal";
+export type CardFace = 'up' | 'down';
+export type CardRotation = 'vertical' | 'horizontal';
 
 // TODO: sync the types below with the props of each component
 
 export type CardProperties = BaseProperties & {
+  type: 'CARD';
   title: string;
-  image?: string;
-  description?: string;
   face: CardFace;
   rotation: CardRotation;
-  isFrontsideDown: boolean;
-  isUpsideRight: boolean;
+  imageUrl?: string;
+  description?: string;
 };
 
-export type DummyCardProperties = Omit<CardProperties, "description">;
+export type DummyCardProperties = BaseProperties & {
+  type: 'DUMMY_CARD';
+  title: string;
+  face: CardFace;
+  rotation: CardRotation;
+  imageUrl?: string;
+};
 
 export type DeckProperties = BaseProperties & {
+  type: 'DECK';
   image?: string;
 };
 
 export type PlaceProperties = BaseProperties & {
+  type: 'PLACE';
   title?: string;
   color?: string;
 };
 
-export type BoardProperties = BaseProperties;
+export type BoardProperties = BaseProperties & {
+  type: 'BOARD';
+};
 
 export type EditableProperties = Omit<
-    CardProperties & PlaceProperties,
-    keyof BaseProperties
-  >;
+  CardProperties & PlaceProperties,
+  keyof BaseProperties
+>;

@@ -17,7 +17,7 @@ export function PropertyEditor() {
   const selectedElement = findGameElementById(
     board,
     selectedElementId
-  ) as EditableProperties;
+  ) as unknown as EditableProperties;
 
   if (!selectedElement) {
     return null;
@@ -33,7 +33,10 @@ export function PropertyEditor() {
     (e: ChangeEvent<HTMLInputElement>) => {
       set(selectedElementId, {
         ...selectedElement,
-        ...{ [propertyKey]: e.target.value },
+        ...{
+          [propertyKey]: e.target
+            .value as EditableProperties[typeof propertyKey],
+        },
       });
     };
 
