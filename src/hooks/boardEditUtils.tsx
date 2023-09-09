@@ -4,6 +4,7 @@ export const findGameElementById = (
   board: GameElement,
   id: string
 ): GameElement => {
+  console.log(id);
   if (board.id === id) return board;
 
   const foundElements = board.childElements

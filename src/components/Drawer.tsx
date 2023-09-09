@@ -2,6 +2,7 @@ import { CSSProperties } from "react";
 import { useRecoilState } from "recoil";
 import { List } from "semantic-ui-react";
 import { drawerVisibilityState } from "../recoil/atoms/ui";
+import { Drawer as DaisyDrawer } from 'react-daisyui';
 
 export type Props = React.PropsWithChildren;
 
@@ -18,9 +19,9 @@ function Drawer({ children = MOCK_DATA }: Props) {
   );
 
   return (
-    <nav style={{ ...container, ...(isDrawerVisible && active) }}>
-      {children}
-    </nav>
+    
+    <DaisyDrawer open={isDrawerVisible} side={children}>
+    </DaisyDrawer>
   );
 }
 
