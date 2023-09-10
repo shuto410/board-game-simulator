@@ -4,34 +4,42 @@ import { selectedElementIdState } from '../recoil/atoms/ui';
 import { EditableProperties } from '../type';
 import { ChangeEvent } from 'react';
 import { Input, Menu, Select } from 'react-daisyui';
-import { findGameElementById } from '../hooks/boardEditUtils';
+import {
+  findGameElementById,
+  updateGameElementById,
+} from '../hooks/boardEditUtils';
 
 export function PropertyEditor() {
   const [board, setBoard] = useRecoilState(boardState);
-  const [selectedElementId, setSelectedElementId] = useRecoilState(
-    selectedElementIdState
-  );
+  const [selectedElementId, _] = useRecoilState(selectedElementIdState);
 
   if (!selectedElementId) return null;
 
   const selectedElement = findGameElementById(
     board,
     selectedElementId
-  ) as unknown as EditableProperties;
+  ) as EditableProperties;
 
   if (!selectedElement) {
     return null;
   }
 
-  const { title, color, image, description, face, rotation } = selectedElement;
-  const set = (id: string, properties: EditableProperties) => {
-    console.log('id: ', id);
-    console.log('properties: ', properties);
+  const { title, color, imageUrl, description, face, rotation } =
+    selectedElement;
+
+  const setProperties = (properties: EditableProperties) => {
+    const newBoard = updateGameElementById(
+      board,
+      { ...properties, type: 'CARD', id: selectedElementId },
+      selectedElementId
+    );
+    setBoard(newBoard);
   };
+
   const getHandleOnChange =
     (propertyKey: keyof EditableProperties) =>
     (e: ChangeEvent<HTMLInputElement>) => {
-      set(selectedElementId, {
+      setProperties({
         ...selectedElement,
         ...{
           [propertyKey]: e.target
@@ -43,7 +51,7 @@ export function PropertyEditor() {
   const getHandleDropdownChange =
     (propertyKey: keyof EditableProperties) =>
     (e: ChangeEvent<HTMLSelectElement>) => {
-      set(selectedElementId, {
+      setProperties({
         ...selectedElement,
         ...{
           [propertyKey]: e.target
@@ -53,67 +61,55 @@ export function PropertyEditor() {
     };
 
   const titleForm = title ? (
-    <div className="flex w-full component-preview p-4 items-center justify-center gap-2 font-sans">
-      <Input
-        placeholder="Title"
-        value={title}
-        onChange={getHandleOnChange('title')}
-      />
-    </div>
+    <Input
+      placeholder="Title"
+      value={title}
+      onChange={getHandleOnChange('title')}
+    />
   ) : null;
 
-  const imageForm = image ? (
-    <div className="flex w-full component-preview p-4 items-center justify-center gap-2 font-sans">
-      <Input
-        placeholder="Image URL"
-        value={image}
-        onChange={getHandleOnChange('image')}
-      />
-    </div>
+  const imageForm = imageUrl ? (
+    <Input
+      placeholder="Image URL"
+      value={imageUrl}
+      onChange={getHandleOnChange('imageUrl')}
+    />
   ) : null;
 
   const colorForm = color ? (
-    <div className="flex w-full component-preview p-4 items-center justify-center gap-2 font-sans">
-      <Input
-        placeholder="color"
-        value={color}
-        onChange={getHandleOnChange('color')}
-      />
-    </div>
+    <Input
+      placeholder="color"
+      value={color}
+      onChange={getHandleOnChange('color')}
+    />
   ) : null;
 
   const descriptionForm = description ? (
-    <div className="flex w-full component-preview p-4 items-center justify-center gap-2 font-sans">
-      <Input
-        placeholder="description"
-        value={description}
-        onChange={getHandleOnChange('description')}
-      />
-    </div>
+    <Input
+      placeholder="description"
+      value={description}
+      onChange={getHandleOnChange('description')}
+    />
   ) : null;
 
   const cardFaceSelection = face ? (
-    <div className="flex w-full component-preview p-4 gap-2 font-sans">
-      <Select value={face} onChange={getHandleDropdownChange('face')}>
-        <option value="default" disabled>
-          Select card face
-        </option>
-        <option value="up">UP</option>
-        <option value="down">DOWN</option>
-      </Select>
-    </div>
+    <Select value={face} onChange={getHandleDropdownChange('face')}>
+      <option value="default" disabled>
+        Select card face
+      </option>
+      <option value="up">UP</option>
+      <option value="down">DOWN</option>
+    </Select>
   ) : null;
 
   const cardRotationSelection = rotation ? (
-    <div className="flex w-full component-preview p-4 gap-2 font-sans">
-      <Select value={rotation} onChange={getHandleDropdownChange('rotation')}>
-        <option value="default" disabled>
-          Select card rotation
-        </option>
-        <option value="vertical">VERTICAL</option>
-        <option value="vertical">HORIZONTAL</option>
-      </Select>
-    </div>
+    <Select value={rotation} onChange={getHandleDropdownChange('rotation')}>
+      <option value="default" disabled>
+        Select card rotation
+      </option>
+      <option value="vertical">VERTICAL</option>
+      <option value="vertical">HORIZONTAL</option>
+    </Select>
   ) : null;
 
   const items = [
@@ -127,13 +123,13 @@ export function PropertyEditor() {
 
   return (
     <Menu className="p-4 w-80 h-full bg-base-200 text-base-content">
-      <Menu.Title className="text-xl">Properties</Menu.Title>
+      <Menu.Title className="text-xl mb-4">Properties</Menu.Title>
       {items.map(({ header, content }) => {
         if (!content) return null;
         return (
           <>
-            <label className="text-lg">{header}</label>
-            {content}
+            <label className="text-lg ml-4">{header}</label>
+            <div className="p-4">{content}</div>
           </>
         );
       })}

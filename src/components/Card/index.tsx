@@ -1,4 +1,3 @@
-import { CardProperties } from '../../type';
 import Draggable from '../Draggable';
 import CardVisual from './CardVisual';
 import { Props as CardVisualProps } from './CardVisual';

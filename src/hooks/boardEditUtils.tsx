@@ -4,7 +4,6 @@ export const findGameElementById = (
   board: GameElement,
   id: string
 ): GameElement => {
-  console.log(id);
   if (board.id === id) return board;
 
   const foundElements = board.childElements
@@ -98,7 +97,11 @@ export const setGameElementProperties = (
     ...gameElement,
     ...properties,
   };
-  return updateGameElementById(board, updatedGameElement, id);
+  return updateGameElementById(
+    board,
+    updatedGameElement as unknown as GameElement,
+    id
+  );
 };
 
 export const isReplaceNecessary = (

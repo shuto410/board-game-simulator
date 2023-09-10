@@ -14,10 +14,10 @@ import {
 import RenderGameElement from './components/RenderGameElement';
 import { BOARD_ID } from './constants';
 import { PropertyEditor } from './components/PropertyEditor';
-import { Drawer, Menu, Textarea } from 'react-daisyui';
-import { Button } from 'semantic-ui-react';
+import { Button, Drawer } from 'react-daisyui';
 import './App.css';
 import useHandleDragEnd from './hooks/useHandleDragEnd';
+import useHandleDragStart from './hooks/useHandleDragStart';
 
 function App() {
   const [counter, setCounter] = useRecoilState(counterState);
@@ -25,14 +25,12 @@ function App() {
   const [isDrawerVisible, setIsDrawerVisible] = useRecoilState(
     drawerVisibilityState
   );
-  const [selectedElementId, setSelectedElementId] = useRecoilState(
-    selectedElementIdState
-  );
+  const [_, setSelectedElementId] = useRecoilState(selectedElementIdState);
   const { handleDragEnd } = useHandleDragEnd();
+  const { handleDragStart } = useHandleDragStart();
 
   // test function for adding items to state and displaying
   const setNewItem = () => {
-    const id = `testPlace${counter}`;
     const newBoard = { ...board };
     newBoard.childElements = [
       ...(board?.childElements ?? []),
@@ -60,7 +58,7 @@ function App() {
       },
     ];
 
-    setSelectedElementId(id);
+    setSelectedElementId(`testCard${counter}`);
     setBoard(newBoard);
     setCounter(counter + 1);
   };
@@ -77,19 +75,28 @@ function App() {
     <div className="App">
       <Drawer
         open={isDrawerVisible}
+        overlayClassName=""
         onClickOverlay={handleOnClick}
         side={<PropertyEditor />}
       >
-        <DndContext onDragEnd={handleDragEnd} modifiers={[snapToGridModifier]}>
+        <DndContext
+          onDragEnd={handleDragEnd}
+          onDragStart={handleDragStart}
+          modifiers={[snapToGridModifier]}
+        >
           <Board size={board.size}>
             {board?.childElements?.map((gameElement) => {
               return <RenderGameElement gameElement={gameElement} />;
             })}
           </Board>
         </DndContext>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button onClick={handleOnClick}>+</Button>
-          <Button onClick={setNewItem}>add new item</Button>
+        <div className="flex justify-end mr-9">
+          <Button onClick={handleOnClick} color="accent" className="mr-5">
+            {'>>'}
+          </Button>
+          <Button onClick={setNewItem} color="accent">
+            +
+          </Button>
         </div>
       </Drawer>
     </div>

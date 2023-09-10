@@ -45,7 +45,7 @@ export type DummyCardProperties = BaseProperties & {
 
 export type DeckProperties = BaseProperties & {
   type: 'DECK';
-  image?: string;
+  imageUrl?: string;
 };
 
 export type PlaceProperties = BaseProperties & {
@@ -58,7 +58,5 @@ export type BoardProperties = BaseProperties & {
   type: 'BOARD';
 };
 
-export type EditableProperties = Omit<
-  CardProperties & PlaceProperties,
-  keyof BaseProperties
->;
+export type EditableProperties = Omit<CardProperties, 'type'> &
+  Omit<PlaceProperties, 'type'>;

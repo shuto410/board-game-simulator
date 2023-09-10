@@ -7,10 +7,11 @@ export const boardTestData: BoardProperties = {
   id: 'board',
   coordinates: testCoordinate,
   size: testSize,
-  Component: () => <></>,
+  type: 'BOARD',
   childElements: [
     {
       id: 'place',
+      type: 'PLACE',
       coordinates: testCoordinate,
       size: testSize,
       parentId: 'board',
