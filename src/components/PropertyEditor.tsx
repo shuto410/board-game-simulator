@@ -20,10 +20,6 @@ export function PropertyEditor() {
     selectedElementId
   ) as EditableProperties;
 
-  if (!selectedElement) {
-    return null;
-  }
-
   const { title, color, imageUrl, description, face, rotation } =
     selectedElement;
 
@@ -78,7 +74,7 @@ export function PropertyEditor() {
 
   const colorForm = color ? (
     <Input
-      placeholder="color"
+      placeholder="Color"
       value={color}
       onChange={getHandleOnChange('color')}
     />
@@ -86,7 +82,7 @@ export function PropertyEditor() {
 
   const descriptionForm = description ? (
     <Input
-      placeholder="description"
+      placeholder="Description"
       value={description}
       onChange={getHandleOnChange('description')}
     />
