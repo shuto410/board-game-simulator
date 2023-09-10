@@ -97,7 +97,11 @@ export const setGameElementProperties = (
     ...gameElement,
     ...properties,
   };
-  return updateGameElementById(board, updatedGameElement, id);
+  return updateGameElementById(
+    board,
+    updatedGameElement as unknown as GameElement,
+    id
+  );
 };
 
 export const isReplaceNecessary = (

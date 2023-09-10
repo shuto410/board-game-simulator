@@ -6,12 +6,18 @@ import { boardState } from './recoil/atoms/board';
 import { DndContext } from '@dnd-kit/core';
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import Board from './components/Board';
-import Drawer from './components/Drawer';
-import { drawerVisibilityState } from './recoil/atoms/ui';
+import {
+  drawerVisibilityState,
+  selectedElementIdState,
+} from './recoil/atoms/ui';
 
 import RenderGameElement from './components/RenderGameElement';
 import { BOARD_ID } from './constants';
+import { PropertyEditor } from './components/PropertyEditor';
+import { Button, Drawer } from 'react-daisyui';
+import './App.css';
 import useHandleDragEnd from './hooks/useHandleDragEnd';
+import useHandleDragStart from './hooks/useHandleDragStart';
 
 function App() {
   const [counter, setCounter] = useRecoilState(counterState);
@@ -19,7 +25,9 @@ function App() {
   const [isDrawerVisible, setIsDrawerVisible] = useRecoilState(
     drawerVisibilityState
   );
+  const [_, setSelectedElementId] = useRecoilState(selectedElementIdState);
   const { handleDragEnd } = useHandleDragEnd();
+  const { handleDragStart } = useHandleDragStart();
 
   // test function for adding items to state and displaying
   const setNewItem = () => {
@@ -42,13 +50,15 @@ function App() {
             size: { width: 100, height: 100 },
             title: `test card ${counter}`,
             imageUrl: 'https://picsum.photos/60/90',
-            state: 'head',
+            face: 'down',
+            rotation: 'horizontal',
             parentId: `testPlace${counter}`,
           },
         ],
       },
     ];
 
+    setSelectedElementId(`testCard${counter}`);
     setBoard(newBoard);
     setCounter(counter + 1);
   };
@@ -63,19 +73,32 @@ function App() {
 
   return (
     <div className="App">
-      <Drawer>
-        <button onClick={setNewItem}>add new item</button>
+      <Drawer
+        open={isDrawerVisible}
+        overlayClassName=""
+        onClickOverlay={handleOnClick}
+        side={<PropertyEditor />}
+      >
+        <DndContext
+          onDragEnd={handleDragEnd}
+          onDragStart={handleDragStart}
+          modifiers={[snapToGridModifier]}
+        >
+          <Board size={board.size}>
+            {board?.childElements?.map((gameElement) => {
+              return <RenderGameElement gameElement={gameElement} />;
+            })}
+          </Board>
+        </DndContext>
+        <div className="flex justify-end mr-9">
+          <Button onClick={handleOnClick} color="accent" className="mr-5">
+            {'>>'}
+          </Button>
+          <Button onClick={setNewItem} color="accent">
+            +
+          </Button>
+        </div>
       </Drawer>
-      <DndContext onDragEnd={handleDragEnd} modifiers={[snapToGridModifier]}>
-        <Board size={board.size}>
-          {board?.childElements?.map((gameElement) => {
-            return <RenderGameElement gameElement={gameElement} />;
-          })}
-        </Board>
-      </DndContext>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <button onClick={handleOnClick}>+</button>
-      </div>
     </div>
   );
 }

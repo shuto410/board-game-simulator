@@ -14,52 +14,49 @@ type BaseProperties = {
   childElements?: GameElement[];
 };
 
-type GameElement =
+export type GameElement =
   | CardProperties
   | DummyCardProperties
   | DeckProperties
   | PlaceProperties
   | BoardProperties;
 
-type CardState = 'head' | 'tail' | 'sideHead' | 'sideTail';
+export type CardFace = 'up' | 'down';
+export type CardRotation = 'vertical' | 'horizontal';
 
 // TODO: sync the types below with the props of each component
 
-type CardProperties = BaseProperties & {
+export type CardProperties = BaseProperties & {
   type: 'CARD';
   title: string;
-  state: CardState;
+  face: CardFace;
+  rotation: CardRotation;
   imageUrl?: string;
   description?: string;
 };
 
-type DummyCardProperties = BaseProperties & {
-  type: 'DUMMY_CARD'
+export type DummyCardProperties = BaseProperties & {
+  type: 'DUMMY_CARD';
   title: string;
-  state: CardState;
+  face: CardFace;
+  rotation: CardRotation;
   imageUrl?: string;
 };
 
-type DeckProperties = BaseProperties & {
-  type: 'DECK'
-  image?: string;
+export type DeckProperties = BaseProperties & {
+  type: 'DECK';
+  imageUrl?: string;
 };
 
-type PlaceProperties = BaseProperties & {
-  type: 'PLACE'
+export type PlaceProperties = BaseProperties & {
+  type: 'PLACE';
   title?: string;
   color?: string;
 };
 
-type BoardProperties = BaseProperties & {
-  type: 'BOARD'
+export type BoardProperties = BaseProperties & {
+  type: 'BOARD';
 };
 
-export type {
-  CardProperties,
-  DeckProperties,
-  DummyCardProperties,
-  PlaceProperties,
-  BoardProperties,
-  GameElement,
-};
+export type EditableProperties = Omit<CardProperties, 'type'> &
+  Omit<PlaceProperties, 'type'>;
